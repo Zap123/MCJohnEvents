@@ -1,7 +1,0 @@
-# MCJohn's Events
-Search nearby events with [Facebook Graph Search](https://en.wikipedia.org/wiki/Facebook_Graph_Search).
-
-![Alt text](screenshot.jpg)
-
-- fbeventsgetter: the crawler
-- App: the FrontEnd
