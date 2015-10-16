@@ -1,0 +1,22 @@
+{
+  "name": "McJohnEvents",
+  "description": "Aggregatore di eventi e piattaforma sociale.",
+  "author": "Luca Costa",
+  "version": "0.2.0",
+  "private": true,
+  "scripts":{
+      "start":"node server.js"
+  },
+  "main":"server.js",
+  "dependencies": {
+    "browserify-middleware":"*",
+    "mithril":"*",
+    "body-parser": "*",
+    "mongodb":"*",
+    "compression":"*",
+    "monk":"*",
+    "mongodb":"*",
+    "monk":"*",
+    "express": "*"
+  }
+}
