@@ -106,9 +106,11 @@ h3 {
 }
 .post-description {
     text-align: justify;
-    -webkit-hyphens: auto;
-    -moz-hyphens: auto;
-    hyphens: auto;
+	-moz-hyphens:auto;
+	-ms-hyphens:auto;
+	-webkit-hyphens:auto;
+	hyphens:auto;
+	word-wrap:break-word;
     white-space: pre-line;
     font-family: Georgia, "Cambria", serif;
     color: #444;

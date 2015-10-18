@@ -1,9 +1,5 @@
 var m = require('mithril')
 
-exports.ctrl = function() {
-
-}
-
 exports.view = function(ctrl, options) {
     return m('nav', {
         'class': 'nav'

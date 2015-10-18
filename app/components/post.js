@@ -1,7 +1,5 @@
 var m = require('mithril')
 
-exports.controller = function(options) {}
-
 exports.view = function(ctrl, event) {
     return m('section', {
         'class': 'post'
