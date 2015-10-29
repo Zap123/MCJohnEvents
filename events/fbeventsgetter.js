@@ -1,13 +1,13 @@
 var system = require('system'),
     fs = require('fs'),
     page = require('webpage').create(),
-    city = 'Zurich',
+    city = system.args[1],
     events = 'https://www.facebook.com/search/str/' +
-    'today%2Bevents%2Bnear%2B'+city+'%252C%2Bswitzerland/keywords_events?ref=top_filter',
+    'today%2Bevents%2Bnear%2B' + city + '/keywords_events?ref=top_filter',
     pwd = phantom.libraryPath,
     iteration = 200,
     last_iter = -1;
-
+console.log(city)
 page.onConsoleMessage = function(msg) {
     console.log(msg);
 };
@@ -107,14 +107,17 @@ var scrolling = function() {
         for (var i = 0; i < eventsList.length; i++) {
             var el = eventsList[i];
             var event = {};
-            var date = el.children[1].children[0].innerHTML;
+            var date = el.children[1].children[0].innerText;
             var name = el.children[0].children[1].innerText || el.children[0].children[1].textContent;
             var url = el.children[0].children[1].children[0].href;
-            var description = el.children[2].innerText || el.children[2].textContent;
+            var description = el.children[1].children[1].innerText || el.children[1].children[1].textContent;
             var img = el.parentNode.parentNode.children[0].children[0].src;
+
             if (/^Today/i.test(date) &&
-                !today.some(function(e) {return e.url === url})) 
-                {
+                !today.some(function(e) {
+                    //remove duplicates url
+                    return e.url === url
+                })) {
                 todaynr++;
                 event.date = date;
                 event.name = name;
@@ -123,11 +126,14 @@ var scrolling = function() {
                 event.description = description;
                 event.img = img;
                 today.push(event);
+
                 console.log(name);
                 console.log(date);
                 console.log(todaynr)
-            } else if (/^Tomorrow/i.test(date) && 
-                       !tomorrow.some(function(e) {return e.url === url})) {
+            } else if (/^Tomorrow/i.test(date) &&
+                !tomorrow.some(function(e) {
+                    return e.url === url
+                })) {
                 //tomorrownr++;
                 event.date = date;
                 event.name = name;
