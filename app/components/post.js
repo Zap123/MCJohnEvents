@@ -18,12 +18,15 @@ exports.view = function(ctrl, event) {
                     'href': event.url
                 }, event.name)
             ]),
-            m('p', {
-                'class': 'post-meta'
-            }, event.date)
+            m('span', {
+                'class': 'post-meta post-category post-category-design'
+            }, event.date),
+            m('span', {
+                'class': 'post-meta post-category post-category-js'
+            }, event.venue)
         ]),
         m('div', {
             'class': 'post-description'
-        }, event.description)
+        }, m('p', event.description))
     ])
 }

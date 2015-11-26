@@ -5,7 +5,7 @@ var system = require('system'),
     events = 'https://www.facebook.com/search/str/' +
     'today%2Bevents%2Bnear%2B' + city + '/keywords_events?ref=top_filter',
     pwd = phantom.libraryPath,
-    iteration = 200,
+    iteration = 100,
     last_iter = -1;
 console.log(city)
 page.onConsoleMessage = function(msg) {
@@ -16,7 +16,7 @@ page.settings.loadImages = false;
 //A viewport not wide enough won't let phantomjs click the events button 
 page.viewportSize = {
     width: 1280,
-    height: 800
+    height: 1024
 };
 
 page.open(events, function(status) {
@@ -34,7 +34,7 @@ page.open(events, function(status) {
                     document.readyState === "complete";
             })
         }, retryLoading);
-        //            window.setInterval(screenshot, 3000);
+//        window.setInterval(screenshot, 3000);
         window.setTimeout(loop, 3000);
         //            window.setInterval(scrolling, 3000);
     } else {
@@ -97,8 +97,16 @@ var screenshot = function() {
     page.render('out.png');
 };
 
+
 var scrolling = function() {
     data = page.evaluate(function() {
+
+        var toText = function(dom){
+            if (dom != null){
+                return dom.innerText||dom.textContent;
+           }
+        }
+
         window.document.body.scrollTop = document.body.scrollHeight;
         var eventsList = document.querySelectorAll("._glj");
         var today = [];
@@ -107,10 +115,16 @@ var scrolling = function() {
         for (var i = 0; i < eventsList.length; i++) {
             var el = eventsList[i];
             var event = {};
-            var date = el.children[1].children[0].innerText;
-            var name = el.children[0].children[1].innerText || el.children[0].children[1].textContent;
+            var venue = toText(el.children[1].children[0]);
+
+            var date = toText(el.children[1].children[1].querySelector('div[class="_52eh"]'));
+
+            var name = toText(el.children[0].children[1]);
+
             var url = el.children[0].children[1].children[0].href;
-            var description = el.children[1].children[1].innerText || el.children[1].children[1].textContent;
+
+            var description = toText(el.children[1].children[1].querySelector('div._52eh,._ajx'));
+
             var img = el.parentNode.parentNode.children[0].children[0].src;
 
             if (/^Today/i.test(date) &&
@@ -120,6 +134,7 @@ var scrolling = function() {
                 })) {
                 todaynr++;
                 event.date = date;
+                event.venue = venue;
                 event.name = name;
                 event.url = url;
                 event.vote = 0;
@@ -129,13 +144,14 @@ var scrolling = function() {
 
                 console.log(name);
                 console.log(date);
-                console.log(todaynr)
+                console.log(todaynr);
             } else if (/^Tomorrow/i.test(date) &&
                 !tomorrow.some(function(e) {
                     return e.url === url
                 })) {
                 //tomorrownr++;
                 event.date = date;
+                event.venue = venue;
                 event.name = name;
                 event.url = url;
                 event.vote = 0;
